@@ -137,6 +137,20 @@ func Test_DisableFlagParsing(t *testing.T) {
 	}
 }
 
+func TestInitHelpFlagMergesFlags(t *testing.T) {
+	usage := "custom flag"
+	baseCmd := Command{Use: "testcmd"}
+	baseCmd.PersistentFlags().Bool("help", false, usage)
+	cmd := Command{Use: "do"}
+	baseCmd.AddCommand(&cmd)
+
+	cmd.initHelpFlag()
+	actual := cmd.Flags().Lookup("help").Usage
+	if actual != usage {
+		t.Fatalf("Expected the help flag from the base command with usage '%s', but got the default with usage '%s'", usage, actual)
+	}
+}
+
 func TestCommandsAreSorted(t *testing.T) {
 	EnableCommandSorting = true
 
@@ -145,11 +159,11 @@ func TestCommandsAreSorted(t *testing.T) {
 
 	var tmpCommand = &Command{Use: "tmp"}
 
-	for _, name := range(originalNames) {
+	for _, name := range originalNames {
 		tmpCommand.AddCommand(&Command{Use: name})
 	}
 
-	for i, c := range(tmpCommand.Commands()) {
+	for i, c := range tmpCommand.Commands() {
 		if expectedNames[i] != c.Name() {
 			t.Errorf("expected: %s, got: %s", expectedNames[i], c.Name())
 		}
@@ -165,11 +179,11 @@ func TestEnableCommandSortingIsDisabled(t *testing.T) {
 
 	var tmpCommand = &Command{Use: "tmp"}
 
-	for _, name := range(originalNames) {
+	for _, name := range originalNames {
 		tmpCommand.AddCommand(&Command{Use: name})
 	}
 
-	for i, c := range(tmpCommand.Commands()) {
+	for i, c := range tmpCommand.Commands() {
 		if originalNames[i] != c.Name() {
 			t.Errorf("expected: %s, got: %s", originalNames[i], c.Name())
 		}
