@@ -1,7 +1,7 @@
 language: go
 arch:
     - AMD64
-    - ppc64le
+    - ppc64le 
 matrix:
   include:
     - go: 1.4.3
