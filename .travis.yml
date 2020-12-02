@@ -1,7 +1,4 @@
 language: go
-arch:
-    - AMD64
-    - ppc64le 
 matrix:
   include:
     - go: 1.4.3
@@ -10,6 +7,18 @@ matrix:
     - go: 1.6.3
     - go: 1.7
     - go: tip
+#Added power jobs
+    - go: 1.4.3
+      arch: ppc64le
+      env: NOVET=true # No bundled vet.
+    - go: 1.5.4
+      arch: ppc64le
+    - go: 1.6.3
+      arch: ppc64le
+    - go: 1.7
+      arch: ppc64le
+    - go: tip
+      arch: ppc64le
   allow_failures:
     - go: tip
 
